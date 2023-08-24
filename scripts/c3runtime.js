@@ -4113,6 +4113,11 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Acts.SetOpacity,
 		C3.Plugins.Sprite.Acts.SetSize,
 		C3.Plugins.Sprite.Acts.SetVisible,
+		C3.Plugins.Sprite.Acts.SetPos,
+		C3.Plugins.System.Exps.viewportright,
+		C3.Plugins.Sprite.Exps.Width,
+		C3.Plugins.System.Exps.viewportbottom,
+		C3.Plugins.Sprite.Exps.Height,
 		C3.Plugins.System.Cnds.ForEach,
 		C3.Plugins.Sprite.Cnds.CompareInstanceVar,
 		C3.Plugins.Sprite.Acts.SetInstanceVar,
@@ -4126,6 +4131,9 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.TiledBg.Acts.SetInstanceVar,
 		C3.Behaviors.Pin.Acts.PinByImagePoint,
 		C3.Plugins.Sprite.Acts.SetBoolInstanceVar,
+		C3.Plugins.Browser.Cnds.IsFullscreen,
+		C3.Plugins.Sprite.Acts.SetAnimFrame,
+		C3.Plugins.System.Cnds.Else,
 		C3.Plugins.System.Cnds.EveryTick,
 		C3.Plugins.TiledBg.Acts.SetWidth,
 		C3.Plugins.TiledBg.Exps.X,
@@ -4137,16 +4145,13 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.System.Cnds.TriggerOnce,
 		C3.Plugins.Sprite.Cnds.PickDistance,
 		C3.Behaviors.Tween.Acts.TweenTwoProperties,
-		C3.Plugins.System.Cnds.Else,
 		C3.Behaviors.DragnDrop.Cnds.OnDragStart,
 		C3.Behaviors.DragnDrop.Cnds.OnDrop,
 		C3.Plugins.Sprite.Cnds.CompareX,
 		C3.Plugins.Sprite.Cnds.CompareY,
 		C3.Plugins.Sprite.Exps.UID,
-		C3.Plugins.Sprite.Exps.Width,
 		C3.Plugins.System.Cnds.CompareBoolVar,
 		C3.Plugins.Sprite.Cnds.PickByUID,
-		C3.Plugins.Sprite.Acts.SetPos,
 		C3.Plugins.Touch.Exps.X,
 		C3.Plugins.Touch.Exps.Y,
 		C3.Plugins.Touch.Cnds.OnTouchStart,
@@ -4158,11 +4163,13 @@ self.C3_GetObjectRefTable = function () {
 		C3.Plugins.Sprite.Exps.Count,
 		C3.Plugins.Touch.Cnds.OnTouchObject,
 		C3.Plugins.Sprite.Cnds.CompareOpacity,
-		C3.Plugins.Sprite.Acts.SetAnimFrame,
 		C3.Plugins.System.Cnds.ForEachOrdered,
 		C3.Plugins.System.Acts.Wait,
 		C3.Plugins.System.Exps.loopindex,
-		C3.Plugins.System.Acts.RestartLayout
+		C3.Plugins.System.Acts.RestartLayout,
+		C3.Plugins.Browser.Acts.CancelFullScreen,
+		C3.Plugins.Browser.Acts.RequestFullScreen,
+		C3.Plugins.Browser.Cnds.OnResize
 	];
 };
 self.C3_JsPropNameTable = [
@@ -4191,6 +4198,7 @@ self.C3_JsPropNameTable = [
 	{FeedbackIcon: 0},
 	{ShowCorrectButton: 0},
 	{StartAgainButton: 0},
+	{FullscreenButton: 0},
 	{Blocks: 0},
 	{DragDrop: 0},
 	{Connectors: 0},
@@ -4313,6 +4321,11 @@ self.C3_ExpressionFuncs = [
 		() => 25,
 		() => 0,
 		p => {
+			const f0 = p._GetNode(0).GetBoundMethod();
+			const n1 = p._GetNode(1);
+			return () => (f0(0) - (n1.ExpObject() / 2));
+		},
+		p => {
 			const n0 = p._GetNode(0);
 			return () => n0.ExpInstVar();
 		},
@@ -4325,6 +4338,7 @@ self.C3_ExpressionFuncs = [
 			return () => ((((n0.ExpInstVar()) === ("L") ? 1 : 0)) ? (1) : (2));
 		},
 		() => "LINE",
+		() => 1,
 		p => {
 			const n0 = p._GetNode(0);
 			const n1 = p._GetNode(1);
@@ -4333,7 +4347,6 @@ self.C3_ExpressionFuncs = [
 			return () => C3.distanceTo(n0.ExpObject(), n1.ExpObject(), n2.ExpObject(), n3.ExpObject());
 		},
 		() => "",
-		() => 1,
 		() => 0.25,
 		() => 0.5,
 		p => {
